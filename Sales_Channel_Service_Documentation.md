@@ -425,7 +425,7 @@ func (s *Service) FetchSSCAndSSCAuthentication(ctx context.Context, storeUniqueI
 
 ---
 
-## 🔗 Webhook Processing
+## Webhook Processing
 
 ### Webhook Reception Flow
 
@@ -895,7 +895,7 @@ go generate
 
 ---
 
-## 🔧 Background Workers
+## Background Workers
 
 ### Worker Types
 
@@ -1242,5 +1242,36 @@ This Sales Channel Service documentation is referenced in the main onboarding gu
 - [API Gateway Documentation](./API_GATEWAY_DOCUMENTATION.md)
 - [Technical Reference Guide](./TECHNICAL_REFERENCE.md)
 - [Sales Channel Service Overview](./sales-channel-service/docs/Overview.md)
+
+---
+
+## Implementation Resources
+
+### For Developers Building New Integrations
+
+- **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** - Complete 14-phase step-by-step guide for implementing new platform integrations
+- **[Technical Reference Guide](./Technical_Reference_Guide.md)** - Common patterns, file structures, and best practices including Wire dependency injection and SQS patterns
+
+### Implementation Phases Overview
+
+The implementation process follows these key phases:
+
+1. **Phase 1-3**: Channel registration, package scaffolding, and routing setup
+2. **Phase 4-5**: Configuration management and database transaction patterns
+3. **Phase 6-7**: SQS event processing and authentication management
+4. **Phase 8-9**: Webhook handling and UI adapters
+5. **Phase 10-11**: Status mapping and POS/location management
+6. **Phase 12-14**: End-to-end testing and deployment
+
+### Quick Start for New Integrations
+
+1. **Register the channel** in enums and factory
+2. **Scaffold the package** structure following the established patterns
+3. **Implement core services** (integration, authenticator, webhooks)
+4. **Set up routing** and controllers
+5. **Configure SQS events** and worker dispatch
+6. **Test the integration** using the comprehensive testing checklist
+
+For detailed implementation steps, refer to the [Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md).
 
 ---

@@ -134,7 +134,9 @@ sales-channel-service/
 2. **Product Sync**: Manual trigger → API → Product Service
 3. **Inventory Sync**: WMS update → Kafka → External platform
 
-** Detailed Documentation**: [Sales Channel Service Documentation](./SALES_CHANNEL_SERVICE_DOCUMENTATION.md)
+** Detailed Documentation**: [Sales Channel Service Documentation](./Sales_Channel_Service_Documentation.md)
+
+** Implementation Guide**: [Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md) - Complete 14-phase developer guide for building new integrations
 
 ### 3. OMS Service (`oms-service/`)
 
@@ -276,6 +278,8 @@ wms-service/
 ---
 
 ## Sales Channel Development
+
+> **📚 Implementation Guide**: For comprehensive step-by-step implementation details, refer to the **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** which covers all 14 phases of building new integrations.
 
 ### Understanding Sales Channels
 
@@ -736,6 +740,8 @@ feature branches
 
 ### First Task: Create a Simple Sales Channel
 
+> **📖 Complete Guide**: For detailed implementation steps, refer to the **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** which provides a comprehensive 14-phase approach.
+
 1. **Choose a Platform**: Start with a simple platform (e.g., a REST API-based platform)
 
 2. **Create Directory Structure**:
@@ -746,9 +752,9 @@ feature branches
    mkdir configurations models requests responses
    ```
 
-3. **Implement Required Files**: Follow the patterns described above
+3. **Implement Required Files**: Follow the patterns described above and detailed in the implementation guide
 
-4. **Test Integration**: Use the platform's test environment
+4. **Test Integration**: Use the platform's test environment and follow the testing checklist
 
 5. **Document**: Update documentation with platform-specific details
 
@@ -777,6 +783,11 @@ feature branches
 - [Sales Channel Service Overview](./sales-channel-service/docs/Overview.md)
 - [Development Workflow](./sales-channel-service/docs/development_workflow.md)
 - [API Documentation](./api-docs/)
+
+### Implementation Guides
+- **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** - Complete 14-phase step-by-step guide for building new integrations
+- **[Technical Reference Guide](./Technical_Reference_Guide.md)** - Common patterns, file structures, and best practices
+- **[Sales Channel Service Documentation](./Sales_Channel_Service_Documentation.md)** - High-level service overview and architecture
 
 ### Code Examples
 - [Shopify Integration](./sales-channel-service/internal/sales_channels/shopify/)

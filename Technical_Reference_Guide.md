@@ -522,7 +522,7 @@ type WebhookResponse struct {
 
 ---
 
-## 🔗 API Endpoint Patterns
+## API Endpoint Patterns
 
 ### 1. **Sync Endpoints**
 ```go
@@ -606,7 +606,7 @@ func (c *Controller) UpdateOrder(ctx *gin.Context) {
 
 ---
 
-## 🗄️ Database Models
+## Database Models
 
 ### Common Database Patterns
 
@@ -674,7 +674,7 @@ type Products struct {
 
 ---
 
-## ⚙️ Configuration Management
+## Configuration Management
 
 ### Environment Configuration
 
@@ -735,7 +735,7 @@ func IsSyncInventoryV2Active(ctx context.Context) bool {
 
 ---
 
-## ❌ Error Handling
+## Error Handling
 
 ### Custom Error Types
 
@@ -818,7 +818,7 @@ func (s *Service) fetchProducts(ctx context.Context, url string) commonError.Cus
 
 ---
 
-## 🧪 Testing Patterns
+## Testing Patterns
 
 ### 1. **Unit Tests**
 ```go
@@ -899,7 +899,7 @@ func TestAPI_SyncProducts(t *testing.T) {
 
 ---
 
-## 🚀 Deployment & Infrastructure
+## Deployment & Infrastructure
 
 ### 1. **Docker Configuration**
 ```dockerfile
@@ -1016,7 +1016,7 @@ spec:
 
 ---
 
-## 📊 Monitoring & Observability
+## Monitoring & Observability
 
 ### 1. **Logging Patterns**
 ```go
@@ -1080,7 +1080,7 @@ func (c *Controller) HealthCheck(ctx *gin.Context) {
 
 ---
 
-## 🔧 Development Tools
+## Development Tools
 
 ### 1. **Code Generation**
 ```bash
@@ -1092,6 +1092,33 @@ mockgen -source=interfaces.go -destination=mocks/mocks.go
 
 # Generate API documentation
 swag init -g main.go
+```
+
+### 2. **Wire Dependency Injection**
+```bash
+# Install wire
+go install github.com/google/wire/cmd/wire@latest
+
+# Generate wire code in specific package
+cd internal/sales_channels/acme
+wire
+
+# Generate wire code for all packages
+find . -name "wire.go" -execdir wire \;
+```
+
+### 3. **Sales Channel Integration Commands**
+```bash
+# Scaffold new sales channel
+mkdir -p internal/sales_channels/new_platform/{configurations,models,services,controller}
+
+# Generate wire code for new platform
+cd internal/sales_channels/new_platform
+wire
+
+# Test integration
+go test ./...
+go build ./...
 ```
 
 ### 2. **Code Quality**
@@ -1116,6 +1143,226 @@ migrate -path db/migrations -database "postgres://user:pass@localhost/dbname?ssl
 
 # Rollback migrations
 migrate -path db/migrations -database "postgres://user:pass@localhost/dbname?sslmode=disable" down
+```
+
+---
+
+## Wire Dependency Injection Patterns
+
+### 1. **Provider Sets**
+
+**File**: `internal/sales_channels/acme/provider.go`
+
+```go
+var ProviderSet = wire.NewSet(
+    // Core dependencies
+    sales_channel_commons.NewRepository,
+    sales_channel_commons.NewService,
+    base.NewSalesChannel,
+
+    // Submodule services
+    integration.NewService,
+    webhooks.NewService,
+    authenticator.NewAuthenticator,
+
+    // External services
+    oms.NewClient, 
+    analytics.NewClient, 
+    product.NewClient,
+    redisCache.NewRedisCacheClient, 
+    redisCache.NewMsgpackSerializer, 
+    cache.NewCache,
+
+    // Interface bindings
+    wire.Bind(new(domain.SalesChannelRepository), new(*sales_channel_commons.Repository)),
+    wire.Bind(new(redisCache.ICache), new(*redisCache.RedisCache)),
+    wire.Bind(new(interfaces.Authenticator), new(*authenticator.Authenticator)),
+    wire.Bind(new(domain.SalesChannelService), new(*sales_channel_commons.Service)),
+
+    // Main service
+    NewService,
+)
+```
+
+### 2. **Wire Functions**
+
+**File**: `internal/sales_channels/acme/wire.go`
+
+```go
+//go:build wireinject
+// +build wireinject
+package acme
+
+import (
+    "context"
+    "github.com/google/wire"
+    "github.com/omniful/go_commons/db/sql/postgres"
+    oredis "github.com/omniful/go_commons/redis"
+)
+
+func ServiceWire(db *postgres.DbCluster, ctx context.Context, client *oredis.Client, nameSpace string) (*Service, error) {
+    panic(wire.Build(ProviderSet))
+}
+```
+
+### 3. **Factory Pattern with Wire**
+
+**File**: `internal/sales_channels/sales_channel_factory.go`
+
+```go
+var salesChannelConstructorMap = map[int]salesChannelConstructor{
+    enums.ShopifySalesChannelID:       initShopifyService,
+    enums.WooCommerceV2SalesChannelID: initWooCommerceV2Service,
+    enums.AcmeSalesChannelID:          initAcmeService, // NEW
+}
+
+func initAcmeService(ctx context.Context) (interfaces.SalesChannel, error) {
+    acmeSvc, err := acme.ServiceWire(
+        postgres.GetCluster().DbCluster,
+        ctx,
+        redis.GetClient().Client,
+        globalUtils.GetNameSpace(ctx),
+    )
+    if err != nil {
+        log.Errorf("Unable to init Acme service: %v", err)
+        return nil, err
+    }
+    return acmeSvc, nil
+}
+```
+
+### 4. **Common Service Wiring for Workers**
+
+**File**: `internal/common_service/common_service.go`
+
+```go
+type SalesChannelServices struct {
+    ShopifyService      domain.ShopifyService
+    WooCommerceService  domain.WooCommerceService
+    AcmeService         domain.AcmeService // NEW
+}
+
+func NewSalesChannelServices(...) *SalesChannelServices {
+    // Create Acme service
+    acmeSvc, err := acme.ServiceWire(postgres.GetCluster().DbCluster, ctx, redis.GetClient().Client, utils.GetNameSpace(ctx))
+    if err != nil { log.Errorf("Acme wire failed: %v", err) }
+
+    return &SalesChannelServices{
+        ShopifyService:     shopifySvc,
+        WooCommerceService: wooCommerceSvc,
+        AcmeService:        acmeSvc, // NEW
+    }
+}
+```
+
+---
+
+## Related Documentation
+
+For comprehensive implementation details and step-by-step guides, refer to:
+
+- **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** - Complete 14-phase implementation guide for new integrations
+- **[Sales Channel Service Documentation](./Sales_Channel_Service_Documentation.md)** - High-level service overview and architecture
+- **[API Gateway Documentation](./Api_Gateway_Documentation.md)** - Routing, authentication, and API patterns
+
+---
+
+## SQS Event Processing Patterns
+
+### 1. **Event Model Structure**
+
+**File**: `internal/workers/models/sqs_models/sync_integration_events.go`
+
+```go
+type SqsSyncIntegrationEvents struct {
+    EventType            string
+    SellerSalesChannelID int64
+    SalesChannelID       int
+    SellerID             string
+    MerchantID           string
+    CreatedAtMin         string
+    CreatedAtMax         string
+    // Additional fields as needed
+}
+```
+
+### 2. **Worker Dispatch Logic**
+
+**File**: `internal/workers/handlers/sqs_integration_events_handler.go`
+
+```go
+switch event.EventType {
+case constants.CreateWebhook:
+    switch event.SalesChannelID {
+    case enums.ShopifySalesChannelID:
+        return commonService.SalesChannelServices.ShopifyService.CreateWebhook(ctx, event)
+    case enums.AcmeSalesChannelID:
+        return commonService.SalesChannelServices.AcmeService.CreateWebhook(ctx, event)
+    }
+
+case constants.DefaultOrderStatusMapping:
+    switch event.SalesChannelID {
+    case enums.ShopifySalesChannelID:
+        return commonService.SalesChannelServices.ShopifyService.HandleDefaultOrderStatusMappingEvent(ctx, event)
+    case enums.AcmeSalesChannelID:
+        return commonService.SalesChannelServices.AcmeService.HandleDefaultOrderStatusMappingEvent(ctx, event)
+    }
+}
+```
+
+### 3. **Event Creation Utilities**
+
+**File**: `utils/scs_sqs_events/sqs_events.go`
+
+```go
+func CreateWebhookEvent(ctx *gin.Context, ssc *models.SellerSalesChannels) commonError.CustomError {
+    event := sqsModels.SqsSyncIntegrationEvents{
+        EventType:            constants.CreateWebhook,
+        SellerSalesChannelID: ssc.Id,
+        SalesChannelID:       ssc.SalesChannelId,
+        SellerID:            ssc.SellerId,
+        MerchantID:          ssc.ExternalMerchantID,
+    }
+    
+    return pushToSqs.SendMessageToWebhookQueue(ctx, event)
+}
+
+func CreateOrderStatusMappingEvent(ctx *gin.Context, ssc *models.SellerSalesChannels) commonError.CustomError {
+    event := sqsModels.SqsSyncIntegrationEvents{
+        EventType:            constants.DefaultOrderStatusMapping,
+        SellerSalesChannelID: ssc.Id,
+        SalesChannelID:       ssc.SalesChannelId,
+        SellerID:            ssc.SellerId,
+        MerchantID:          ssc.ExternalMerchantID,
+    }
+    
+    return pushToSqs.SendMessageToOrderStatusMappingQueue(ctx, event)
+}
+```
+
+### 4. **Background Worker Processing**
+
+**File**: `internal/workers/handlers/sqs_integration_events_handler.go`
+
+```go
+func (e SqsIntegrationEventsHandler) Process(ctx context.Context, sqsMessages *[]sqs.Message) error {
+    for _, message := range *sqsMessages {
+        var eventAttributes sqsModels.SqsSyncIntegrationEvents
+        
+        if err := json.Unmarshal([]byte(message.Body), &eventAttributes); err != nil {
+            log.Errorf("Failed to unmarshal SQS message: %v", err)
+            continue
+        }
+        
+        // Route to appropriate handler based on event type and sales channel
+        if err := e.routeEvent(ctx, eventAttributes); err != nil {
+            log.Errorf("Failed to process event: %v", err)
+            // Consider dead letter queue for failed events
+        }
+    }
+    
+    return nil
+}
 ```
 
 ---
