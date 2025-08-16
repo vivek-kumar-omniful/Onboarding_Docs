@@ -1,4 +1,4 @@
-# ![[Pasted image 20250816171101.png|23]] Omniful Developer Onboarding Guide
+# Omniful Developer Onboarding Guide
 
 ## Table of Contents
 1. [Company Overview](#company-overview)

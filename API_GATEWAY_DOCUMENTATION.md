@@ -1,4 +1,4 @@
-# ![[Pasted image 20250816171101.png|23]] Omniful API Gateway Documentation
+# Omniful API Gateway Documentation
 
 ## Table of Contents
 1. [Overview](#overview)

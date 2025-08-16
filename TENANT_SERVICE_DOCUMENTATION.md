@@ -1,4 +1,4 @@
-# ![[Pasted image 20250816171101.png|23]] Omniful Tenant Service Documentation
+# Omniful Tenant Service Documentation
 
 ## Table of Contents
 1. [Overview](#overview)

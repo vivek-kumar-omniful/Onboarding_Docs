@@ -1,4 +1,4 @@
-# ![[Pasted image 20250816171101.png|23]] Omniful Technical Reference Guide
+# Omniful Technical Reference Guide
 
 ## Table of Contents
 1. [File Structure Patterns](#file-structure-patterns)

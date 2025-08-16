@@ -1,4 +1,4 @@
-# ![[Pasted image 20250816171101.png|23]] Omniful Product Service Documentation
+# Omniful Product Service Documentation
 
 ## Table of Contents
 1. [Overview](#overview)
