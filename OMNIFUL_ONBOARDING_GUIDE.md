@@ -101,7 +101,7 @@ api-gateway/
 - `POST /api/v1/orders`
 - `GET /api/v1/products`
 
-** Detailed Documentation**: [API Gateway Documentation](./API_GATEWAY_DOCUMENTATION.md)
+**Detailed Documentation**: [API Gateway Documentation](./API_GATEWAY_DOCUMENTATION.md)
 
 ### 2. Sales Channel Service (`sales-channel-service/`)
 
