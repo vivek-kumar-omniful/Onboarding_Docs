@@ -210,7 +210,7 @@ product-service/
 
 ** Detailed Documentation**: [Customer Service Documentation](./CUSTOMER_SERVICE_DOCUMENTATION.md)
 
-### 6. 🏢 Tenant Service (`tenant-service/`)
+### 6. Tenant Service (`tenant-service/`)
 
 **Purpose**: Multi-tenancy and configuration management
 
@@ -238,7 +238,7 @@ tenant-service/
 └── deployment/                # Database migrations
 ```
 
-**📖 Detailed Documentation**: [Tenant Service Documentation](./TENANT_SERVICE_DOCUMENTATION.md)
+**Detailed Documentation**: [Tenant Service Documentation](./TENANT_SERVICE_DOCUMENTATION.md)
 
 ### 7. WMS Service (`wms-service/`)
 
@@ -273,13 +273,13 @@ wms-service/
 └── deployment/                # Database migrations
 ```
 
-**📖 Detailed Documentation**: [WMS Service Documentation](./WMS_SERVICE_DOCUMENTATION.md)
+**Detailed Documentation**: [WMS Service Documentation](./WMS_SERVICE_DOCUMENTATION.md)
 
 ---
 
 ## Sales Channel Development
 
-> **📚 Implementation Guide**: For comprehensive step-by-step implementation details, refer to the **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** which covers all 14 phases of building new integrations.
+> **Implementation Guide**: For comprehensive step-by-step implementation details, refer to the **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** which covers all 14 phases of building new integrations.
 
 ### Understanding Sales Channels
 
@@ -740,7 +740,7 @@ feature branches
 
 ### First Task: Create a Simple Sales Channel
 
-> **📖 Complete Guide**: For detailed implementation steps, refer to the **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** which provides a comprehensive 14-phase approach.
+> **Complete Guide**: For detailed implementation steps, refer to the **[Sales Channel Implementation Guide](./Sales_Channel_Implementation_Guide.md)** which provides a comprehensive 14-phase approach.
 
 1. **Choose a Platform**: Start with a simple platform (e.g., a REST API-based platform)
 

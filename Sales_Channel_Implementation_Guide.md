@@ -826,5 +826,3 @@ go run main.go -mode=http
 - **[Product Service Documentation](./Product_Service_Documentation.md)** - Product catalog integration
 
 ---
-
-*This guide provides a comprehensive implementation path for new sales channel integrations. For questions or clarifications, refer to the existing documentation or consult with the development team.*

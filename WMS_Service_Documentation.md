@@ -47,20 +47,20 @@ The **WMS Service** (Warehouse Management Service) is a critical microservice in
 ┌─────────────────────────────────────────────────────────────┐
 │                   WMS Service                               │
 ├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │   HTTP API  │  │   Workers   │  │  Migration  │        │
-│  │   Server    │  │   System    │  │   System    │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
+│    ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│    │   HTTP API  │  │   Workers   │  │  Migration  │        │
+│    │   Server    │  │   System    │  │   System    │        │
+│    └─────────────┘  └─────────────┘  └─────────────┘        │
 ├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │ Controllers │  │   Services  │  │   Models    │        │
-│  │             │  │             │  │             │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
+│    ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│    │ Controllers │  │   Services  │  │   Models    │        │
+│    │             │  │             │  │             │        │
+│    └─────────────┘  └─────────────┘  └─────────────┘        │
 ├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │ PostgreSQL  │  │    Redis    │  │    Kafka    │        │
-│  │             │  │             │  │             │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
+│    ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│    │ PostgreSQL  │  │    Redis    │  │    Kafka    │        │
+│    │             │  │             │  │             │        │
+│    └─────────────┘  └─────────────┘  └─────────────┘        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -598,5 +598,3 @@ docker run -p 8083:8083 wms-service
 - **Metrics**: Performance and operational metrics
 
 ---
-
-**WMS Service** is the backbone of Omniful's warehouse operations, providing comprehensive warehouse management capabilities from layout design to order fulfillment, ensuring efficient and accurate warehouse operations across all tenants.
